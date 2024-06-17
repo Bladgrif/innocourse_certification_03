@@ -1,4 +1,4 @@
-package ru.inno.selenium.test;
+package ru.inno;
 
 import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.BeforeAll;

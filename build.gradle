@@ -8,13 +8,17 @@ repositories {
 
 dependencies {
     testImplementation(
+            "org.seleniumhq.selenium:selenium-java:4.4.0",
             "com.codeborne:selenide:6.16.0",
             "org.junit.jupiter:junit-jupiter:5.9.3",
             "io.rest-assured:rest-assured:5.4.0",
+            "io.qameta.allure:allure-junit5:2.15.0",
             "com.fasterxml.jackson.core:jackson-databind:2.16.1",
             "com.github.javafaker:javafaker:1.0.2",
             "org.seleniumhq.selenium:selenium-java:4.1.0",
-            "org.slf4j:slf4j-simple:2.0.7")
+            "org.slf4j:slf4j-simple:2.0.7",
+            "io.cucumber:cucumber-java:7.0.0",
+            "io.cucumber:cucumber-junit:7.0.0")
 }
 
 tasks.withType(JavaCompile) {
