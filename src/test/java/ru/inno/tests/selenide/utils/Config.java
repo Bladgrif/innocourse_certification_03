@@ -1,5 +1,6 @@
 package ru.inno.tests.selenide.utils;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -9,14 +10,26 @@ public class Config {
     private static Properties properties = new Properties();
 
     static {
-        try (InputStream input = Config.class.getClassLoader().getResourceAsStream(CONFIG_FILE)) {
-            properties.load(input);
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        try {
+            properties.load(new FileInputStream(CONFIG_FILE));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    public static String get(String key) {
-        return properties.getProperty(key);
+    public static String getUrl() {
+        return properties.getProperty("url");
+    }
+
+    public static String getUsername() {
+        return properties.getProperty("username");
+    }
+
+    public static String getPassword() {
+        return properties.getProperty("password");
+    }
+
+    public static String getUserID() {
+        return properties.getProperty("userID");
     }
 }
