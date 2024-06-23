@@ -28,17 +28,6 @@ dependencies {
             "org.slf4j:slf4j-simple:2.0.7",
             "io.cucumber:cucumber-java:7.0.0",
             "io.cucumber:cucumber-junit:7.0.0")
-
-//    compileOnly 'org.projectlombok:lombok:1.18.32'
-//    annotationProcessor 'org.projectlombok:lombok:1.18.32'
-//
-//    testCompileOnly 'org.projectlombok:lombok:1.18.32'
-//    testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
-//
-//    def lombok = '1.18.32'
-//
-//    annotationProcessor("org.projectlombok:lombok:$lombok")
-//    compileOnly("org.projectlombok:lombok:$lombok")
 }
 
 
@@ -48,4 +37,13 @@ tasks.withType(JavaCompile) {
 
 test {
     useJUnitPlatform()
+}
+
+task SelenideTest(type: Test) {
+    useJUnitPlatform {
+        includeTags 'Demoqa'
+    }
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }

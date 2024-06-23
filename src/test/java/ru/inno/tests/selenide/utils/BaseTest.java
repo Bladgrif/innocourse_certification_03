@@ -1,6 +1,7 @@
 package ru.inno.tests.selenide.utils;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,10 +23,12 @@ public class BaseTest {
     @BeforeEach
     void beforeEach() {
         booksApi.deleteBooksFromCollection();
+        WebDriverRunner.closeWebDriver();
     }
 
     @AfterEach
     void afterEach() {
         booksApi.deleteBooksFromCollection();
+
     }
 }

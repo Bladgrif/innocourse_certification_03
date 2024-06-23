@@ -1,5 +1,6 @@
 package ru.inno.tests.selenide.tests;
 
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import ru.inno.tests.selenide.pages.BooStoreApplications;
 import ru.inno.tests.selenide.pages.BooksPage;
@@ -19,6 +20,7 @@ public class DemoqaTests extends BaseTest {
     BooStoreApplications applications = new BooStoreApplications();
 
     @Test
+    @Tag("Demoqa")
     void checkEmptyTable() {
         loginPage.openLoginPage(); // открываем страницу входа
         loginPage.loginAs(USER); // вводим логин и пароль, а затем жмем кнопку входа
@@ -27,6 +29,7 @@ public class DemoqaTests extends BaseTest {
     }
 
     @Test
+    @Tag("Demoqa")
     void CheckingTheTableAfterAdding6Books() {
         loginPage.openLoginPage(); // открываем страницу входа
         loginPage.loginAs(USER); // вводим логин и пароль, а затем жмем кнопку входа
@@ -43,6 +46,7 @@ public class DemoqaTests extends BaseTest {
     }
 
     @Test
+    @Tag("Demoqa")
     void CheckingTheTableAfterAdding2BooksAndDeleting2Book() {
         loginPage.openLoginPage(); // открываем страницу входа
         loginPage.loginAs(USER); // вводим логин и пароль, а затем жмем кнопку входа
