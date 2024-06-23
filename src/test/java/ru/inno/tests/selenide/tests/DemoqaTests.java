@@ -14,7 +14,7 @@ import ru.inno.tests.selenide.utils.BooksApi;
 import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Epic("Demoqa Tests")
+@Epic("Demoqa Tests Selenide")
 @Feature("Book Store Application Tests")
 @ExtendWith(ClearBookCollectionExtension.class)
 public class DemoqaTests extends BaseTest {

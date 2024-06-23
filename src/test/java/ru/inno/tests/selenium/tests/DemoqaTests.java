@@ -14,7 +14,7 @@ import ru.inno.tests.selenium.utils.BooksApi;
 import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Epic("Demoqa Tests")
+@Epic("Demoqa Tests Selenium")
 @Feature("Book Store Application Tests")
 public class DemoqaTests extends BaseTest {
 
