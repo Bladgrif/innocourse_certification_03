@@ -1,27 +1,13 @@
 package ru.inno.tests.selenide.tests;
 
-import com.codeborne.selenide.Configuration;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import org.asynchttpclient.Response;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ru.inno.tests.selenide.models.AuthRequest;
-import ru.inno.tests.selenide.models.Book;
-import ru.inno.tests.selenide.pageobjects.BooksPage;
-import ru.inno.tests.selenide.pageobjects.LoginPage;
-import ru.inno.tests.selenide.pageobjects.ProfilePage;
+import ru.inno.tests.selenide.pages.BooStoreApplications;
+import ru.inno.tests.selenide.pages.BooksPage;
+import ru.inno.tests.selenide.pages.LoginPage;
+import ru.inno.tests.selenide.pages.ProfilePage;
 import ru.inno.tests.selenide.utils.BaseTest;
+import ru.inno.tests.selenide.utils.BooksApi;
 
-import java.time.Duration;
-import java.util.List;
-
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
-import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.given;
-import static ru.inno.tests.selenide.utils.Config.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DemoqaTests extends BaseTest {
@@ -29,95 +15,46 @@ public class DemoqaTests extends BaseTest {
     LoginPage loginPage = new LoginPage();
     ProfilePage profilePage = new ProfilePage();
     BooksPage booksPage = new BooksPage();
+    BooksApi api = new BooksApi();
+    BooStoreApplications applications = new BooStoreApplications();
 
     @Test
     void checkEmptyTable() {
-//        loginPage.openLoginPage()
-//                .setUsernameField(getUsername())
-//                .setPasswordField(getPassword())
-//                .clickLoginButton();
+        loginPage.openLoginPage(); // открываем страницу входа
+        loginPage.loginAs(USER); // вводим логин и пароль, а затем жмем кнопку входа
 
-        loginPage.openLoginPage()
-                .loginAs(USER);
-
-        assertEquals("No rows found", profilePage.getUserTableStatus(), "Table is not empty");
+        assertEquals(0, profilePage.countBooksWithImages(5)); // проверяем, что в таблице нет книг
     }
 
     @Test
-    void scenarioTwo() {
-//        loginPage.openLoginPage()
-//                .setUsernameField(getUsername())
-//                .setPasswordField(getPassword())
-//                .clickLoginButton();
+    void CheckingTheTableAfterAdding6Books() {
+        loginPage.openLoginPage(); // открываем страницу входа
+        loginPage.loginAs(USER); // вводим логин и пароль, а затем жмем кнопку входа
 
-        loginPage.openLoginPage()
-                .loginAs(USER);
+        applications.GoToBookStore(); // переходим на страницу книг
+        api.addBookInCollection(6); // добавляем книги в коллекцию через API, т.к. не работает на сайте
 
-        booksPage.openBooksPage()
-                .addBookInCollection(6);
+        applications.GoToProfilePage(); // возвращаемся на страницу профиля
+        loginPage.openLoginPage(); //После апи запроса на добавление книг,происходит выход из акааунта, входим заного
+        loginPage.loginAs(USER);
 
-        profilePage.openProfilePage();
-
-        assertEquals(6, profilePage.countBooksWithImages());
-
+        assertEquals(6, profilePage.countBooksWithImages(10)); // проверяем, что в таблице есть книги
+        // передаем количество добавленных книг "6", раскрытие таблицы на нужное количество полей "10"
     }
 
     @Test
-    void sceanrioThree() {
+    void CheckingTheTableAfterAdding2BooksAndDeleting2Book() {
+        loginPage.openLoginPage(); // открываем страницу входа
+        loginPage.loginAs(USER); // вводим логин и пароль, а затем жмем кнопку входа
+
+        applications.GoToBookStore(); // переходим на страницу книг
+        api.addBookInCollection(2); // добавляем книги в коллекцию через API, т.к. не работает на сайте
+
+        applications.GoToProfilePage(); // возвращаемся на страницу профиля
+        loginPage.openLoginPage(); //После апи запроса на добавление книг,происходит выход из акааунта, входим заного
+        loginPage.loginAs(USER);
+        profilePage.deleteAllBooks();  // удаляем 2 книги из коллекции
+
+        assertEquals(0, profilePage.countBooksWithImages(5)); // проверяем, что в таблице нет книг
     }
-
-    @Test
-    void getToken() {
-        AuthRequest authRequest = new AuthRequest()
-                .setUserName("qwer1234")
-                .setPassword("qwer1234Q!");
-
-        String token = given()
-                .contentType(ContentType.JSON)
-                .body(authRequest)
-                .when()
-                .post("https://demoqa.com/Account/v1/GenerateToken")
-                .then()
-                .statusCode(200)
-//                .extract().body().jsonPath().getString("token");
-                .extract().path("token");
-
-        System.out.println(token);
-    }
-
-    @Test
-    void getBook() {
-        List<Book> books = given()
-                .when()
-                .get("https://demoqa.com/BookStore/v1/Books")
-                .then()
-                .extract().body().jsonPath().getList("books", Book.class);
-    }
-
-    @Test
-    void addBook() {
-        String c = """
-                    {
-                    "userId": "2dba319c-c474-4688-8ec3-b70a3baf0124",
-                    "collectionOfIsbns": [
-                        {
-                            "isbn": "9781449325862"
-                        }
-                    ]
-                }""";
-
-        given()
-                .auth()
-                .preemptive()
-                .basic("qwer1234", "qwer1234Q!")
-                .contentType(ContentType.JSON)
-                .body(c)
-                .header("Accept", ContentType.JSON.getAcceptHeader())
-                .post("https://demoqa.com/BookStore/v1/Books")
-                .then()
-                .log().all()
-                .statusCode(201);
-    }
-
-
 }

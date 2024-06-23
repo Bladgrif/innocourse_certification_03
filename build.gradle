@@ -7,6 +7,15 @@ repositories {
 }
 
 dependencies {
+    implementation platform('org.slf4j:slf4j-bom:2.0.13')
+    implementation('org.slf4j:jul-to-slf4j')   // Java Util Logging -> SLF4J
+    implementation('org.slf4j:jcl-over-slf4j') // commons-logging -> SLF4J
+
+    implementation platform(group: 'org.apache.logging.log4j', name: 'log4j-bom', version: '2.23.1')
+    implementation(group: 'org.apache.logging.log4j', name: 'log4j-api')
+    implementation(group: 'org.apache.logging.log4j', name: 'log4j-core')
+    implementation(group: 'org.apache.logging.log4j', name: 'log4j-slf4j2-impl')
+
     testImplementation(
             "org.seleniumhq.selenium:selenium-java:4.4.0",
             "com.codeborne:selenide:6.16.0",
@@ -19,7 +28,19 @@ dependencies {
             "org.slf4j:slf4j-simple:2.0.7",
             "io.cucumber:cucumber-java:7.0.0",
             "io.cucumber:cucumber-junit:7.0.0")
+
+//    compileOnly 'org.projectlombok:lombok:1.18.32'
+//    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+//
+//    testCompileOnly 'org.projectlombok:lombok:1.18.32'
+//    testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
+//
+//    def lombok = '1.18.32'
+//
+//    annotationProcessor("org.projectlombok:lombok:$lombok")
+//    compileOnly("org.projectlombok:lombok:$lombok")
 }
+
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
