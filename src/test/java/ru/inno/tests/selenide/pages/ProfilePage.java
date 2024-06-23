@@ -15,15 +15,12 @@ public class ProfilePage {
 
     public static final String PROFILE_PATH = "profile";
 
-
     private BooksPage booksPage = new BooksPage();
 
     private List<SelenideElement> profileTableRows = $$("div.rt-tr-group img");
     private SelenideElement profileTableCountRows = $("[aria-label='rows per page']");
     private SelenideElement buttonDeleteAllBooks = $(".buttonWrap").$(byText("Delete All Books"));
     private SelenideElement buttonDeleteAllBooksAllert = $(".modal-content #closeSmallModal-ok");
-    private SelenideElement buttonDeleteAllBooksSucessful = $(".modal-content #closeSmallModal-ok");
-
 
     public void openProfilePage() {
         open(getUrl() + PROFILE_PATH);
@@ -59,14 +56,9 @@ public class ProfilePage {
         return profileTableRows.size();
     }
 
-    private void ExpandTheProfileTableWithBooks() {
-        profileTableCountRows.selectOption("10 rows");
-    }
-
     public void deleteAllBooks() {
         buttonDeleteAllBooks.shouldBe(visible, Duration.ofSeconds(5)).click();
         buttonDeleteAllBooksAllert.shouldBe(visible, Duration.ofSeconds(5)).click();
         Selenide.confirm();
     }
-
 }

@@ -17,7 +17,6 @@ public class BaseTest {
         Configuration.browser = "edge";
         Configuration.browserSize = "1920x1080";
         Configuration.pageLoadStrategy = "eager";
-
     }
 
     @BeforeEach
@@ -29,6 +28,4 @@ public class BaseTest {
     void afterEach() {
         booksApi.deleteBooksFromCollection();
     }
-
-
 }
