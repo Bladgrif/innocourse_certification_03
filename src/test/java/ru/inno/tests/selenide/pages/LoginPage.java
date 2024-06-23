@@ -19,11 +19,11 @@ public class LoginPage {
         open(getUrl() + LOGIN_PATH);
     }
 
-    public void setUsernameField(String value) {
+    private void setUsernameField(String value) {
         usernameField.setValue(value);
     }
 
-    public void setPasswordField(String value) {
+    private void setPasswordField(String value) {
         passwordField.setValue(value);
     }
 
@@ -31,13 +31,6 @@ public class LoginPage {
         openLoginPage();
         setUsernameField(user.getName());
         setPasswordField(user.getPassword());
-        clickLoginButton();
-    }
-
-    public void loginAs(String username, String password) {
-        openLoginPage();
-        setUsernameField(username);
-        setPasswordField(password);
         clickLoginButton();
     }
 

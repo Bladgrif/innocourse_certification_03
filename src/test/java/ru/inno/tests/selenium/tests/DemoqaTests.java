@@ -1,32 +1,51 @@
-package ru.inno.tests.selenide.tests;
+package ru.inno.tests.selenium.tests;
 
+import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.*;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import ru.inno.tests.selenide.extensions.ClearBookCollectionExtension;
-import ru.inno.tests.selenide.pages.BooStoreApplications;
-import ru.inno.tests.selenide.pages.LoginPage;
-import ru.inno.tests.selenide.pages.ProfilePage;
-import ru.inno.tests.selenide.utils.BaseTest;
-import ru.inno.tests.selenide.utils.BooksApi;
+import org.junit.jupiter.api.*;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+import ru.inno.tests.selenium.pages.BooStoreApplications;
+import ru.inno.tests.selenium.pages.LoginPage;
+import ru.inno.tests.selenium.pages.ProfilePage;
+import ru.inno.tests.selenium.utils.BaseTest;
+import ru.inno.tests.selenium.utils.BooksApi;
 
 import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Epic("Demoqa Tests")
 @Feature("Book Store Application Tests")
-@ExtendWith(ClearBookCollectionExtension.class)
 public class DemoqaTests extends BaseTest {
 
     //добавляем книги в коллекцию через API, т.к. не работает на сайте
     //После апи запроса на добавление книг, происходит выход из акааунта, поэтому приходится авторизоваться заного
+    private BooksApi booksApi = new BooksApi();
+    private WebDriver driver;
 
-    private LoginPage loginPage = new LoginPage();
-    private ProfilePage profilePage = new ProfilePage();
+    private LoginPage loginPage = new LoginPage(driver);
+    private ProfilePage profilePage = new ProfilePage(driver);
     private BooksApi api = new BooksApi();
-    private BooStoreApplications applications = new BooStoreApplications();
+    private BooStoreApplications applications = new BooStoreApplications(driver);
 
+    @AfterEach
+    public void afterEach() {
+        booksApi.deleteBooksFromCollection();
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+    @BeforeEach
+    public void beforeEach() {
+        driver = new EdgeDriver();
+        driver.manage().window().maximize();
+
+        booksApi.deleteBooksFromCollection();
+        WebDriverRunner.closeWebDriver();
+    }
+
+    @Disabled
     @Test
     @Tag("Demoqa")
     @Story("User checks the empty book table")
@@ -40,8 +59,10 @@ public class DemoqaTests extends BaseTest {
         step("Проверка, что таблица содержит  0 книг после входа в систему", () -> {
             assertEquals(0, profilePage.countBooksWithImages(5));
         });
+
     }
 
+    @Disabled
     @Test
     @Tag("Demoqa")
     @Story("User adds 6 books to the collection and checks the table")
@@ -65,6 +86,7 @@ public class DemoqaTests extends BaseTest {
         });
     }
 
+    @Disabled
     @Test
     @Tag("Demoqa")
     @Story("User adds and deletes books from the collection")

@@ -1,7 +1,8 @@
-package ru.inno.tests.selenide.pages;
+package ru.inno.tests.selenium.pages;
 
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
+import org.openqa.selenium.WebDriver;
 
 import java.time.Duration;
 import java.util.List;
@@ -10,13 +11,31 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
+import static ru.inno.tests.selenide.utils.Config.getUrl;
 
 public class ProfilePage {
+
+    private final WebDriver driver;
+
+    public ProfilePage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    public static final String PROFILE_PATH = "profile";
 
     private List<SelenideElement> profileTableRows = $$("div.rt-tr-group img");
     private SelenideElement profileTableCountRows = $("[aria-label='rows per page']");
     private SelenideElement buttonDeleteAllBooks = $(".buttonWrap").$(byText("Delete All Books"));
     private SelenideElement buttonDeleteAllBooksAllert = $(".modal-content #closeSmallModal-ok");
+
+    public void openProfilePage() {
+        driver.get(getUrl() + PROFILE_PATH);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+    }
+
+    public void refresh() {
+        refresh();
+    }
 
     public int countBooksWithImages(int count) {
         switch (count) {
