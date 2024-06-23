@@ -1,7 +1,6 @@
 package ru.inno.tests.selenide.utils;
 
 import io.restassured.http.ContentType;
-import org.junit.jupiter.api.Test;
 import ru.inno.tests.selenide.models.Book;
 import ru.inno.tests.selenide.models.CollectionOfIsbnsItem;
 import ru.inno.tests.selenide.models.ResponseToAddBook;
@@ -39,11 +38,6 @@ public class BooksApi {
                     .then()
                     .statusCode(201);
         }
-    }
-
-    @Test
-    void name() {
-        System.out.println(getUrl() + BOOKS_STORE_API_DELETE);
     }
 
     public void deleteBooksFromCollection() {
