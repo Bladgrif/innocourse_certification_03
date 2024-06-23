@@ -1,62 +1,98 @@
 package ru.inno.tests.selenide.tests;
 
+import io.qameta.allure.*;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import ru.inno.tests.selenide.extensions.ClearBookCollectionExtension;
 import ru.inno.tests.selenide.pages.BooStoreApplications;
 import ru.inno.tests.selenide.pages.LoginPage;
 import ru.inno.tests.selenide.pages.ProfilePage;
 import ru.inno.tests.selenide.utils.BaseTest;
 import ru.inno.tests.selenide.utils.BooksApi;
 
+import static io.qameta.allure.Allure.step;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Epic("Demoqa Tests")
+@Feature("Book Store Application Tests")
+@ExtendWith(ClearBookCollectionExtension.class)
 public class DemoqaTests extends BaseTest {
+
+    //добавляем книги в коллекцию через API, т.к. не работает на сайте
+    //После апи запроса на добавление книг, происходит выход из акааунта, поэтому приходится авторизоваться заного
 
     LoginPage loginPage = new LoginPage();
     ProfilePage profilePage = new ProfilePage();
     BooksApi api = new BooksApi();
     BooStoreApplications applications = new BooStoreApplications();
 
+
     @Test
     @Tag("Demoqa")
+    @Story("User checks the empty book table")
+    @Owner("Grigoriev Roman")
+    @Severity(SeverityLevel.NORMAL)
+    @Description("Этот тест проверяет, что таблица книг пуста после входа в систему.")
     void checkEmptyTable() {
-        loginPage.openLoginPage(); // открываем страницу входа
-        loginPage.loginAs(USER); // вводим логин и пароль, а затем жмем кнопку входа
+        step("Авторизация на странице пользователя", () -> {
+            loginPage.loginAs(USER);
+        });
+        step("Проверка, что таблица содержит  0 книг после входа в систему", () -> {
+            assertEquals(0, profilePage.countBooksWithImages(5));
+        });
 
-        assertEquals(0, profilePage.countBooksWithImages(5)); // проверяем, что в таблице нет книг
     }
 
     @Test
     @Tag("Demoqa")
+    @Story("User adds 6 books to the collection and checks the table")
+    @Owner("Grigoriev Roman")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Этот тест проверяет, что таблица содержит 6 книг после добавления через API.")
     void CheckingTheTableAfterAdding6Books() {
-        loginPage.openLoginPage(); // открываем страницу входа
-        loginPage.loginAs(USER); // вводим логин и пароль, а затем жмем кнопку входа
-
-        applications.GoToBookStore(); // переходим на страницу книг
-        api.addBookInCollection(6); // добавляем книги в коллекцию через API, т.к. не работает на сайте
-
-        applications.GoToProfilePage(); // возвращаемся на страницу профиля
-        loginPage.openLoginPage(); //После апи запроса на добавление книг,происходит выход из акааунта, входим заного
-        loginPage.loginAs(USER);
-
-        assertEquals(6, profilePage.countBooksWithImages(10)); // проверяем, что в таблице есть книги
-        // передаем количество добавленных книг "6", раскрытие таблицы на нужное количество полей "10"
+        step("Авторизация на странице пользователя", () -> {
+            loginPage.loginAs(USER);
+        });
+        step("Добавление 6 книг в коллекцию", () -> {
+            applications.GoToBookStore();
+            api.addBookInCollection(6);
+        });
+        step("Возврат на страницу профиля", () -> {
+            applications.GoToProfilePage();
+            loginPage.loginAs(USER);
+        });
+        step("Проверка, что таблица содержит 6 книг после добавления", () -> {
+            assertEquals(6, profilePage.countBooksWithImages(10));
+        });
     }
 
     @Test
     @Tag("Demoqa")
+    @Story("User adds and deletes books from the collection")
+    @Owner("Grigoriev Roman")
+    @Severity(SeverityLevel.CRITICAL)
+    @Description("Этот тест проверяет, что таблица пуста после добавления 2 книг и удаления всех книг.")
     void CheckingTheTableAfterAdding2BooksAndDeleting2Book() {
-        loginPage.openLoginPage(); // открываем страницу входа
-        loginPage.loginAs(USER); // вводим логин и пароль, а затем жмем кнопку входа
-
-        applications.GoToBookStore(); // переходим на страницу книг
-        api.addBookInCollection(2); // добавляем книги в коллекцию через API, т.к. не работает на сайте
-
-        applications.GoToProfilePage(); // возвращаемся на страницу профиля
-        loginPage.openLoginPage(); //После апи запроса на добавление книг,происходит выход из акааунта, входим заного
-        loginPage.loginAs(USER);
-        profilePage.deleteAllBooks();  // удаляем 2 книги из коллекции
-
-        assertEquals(0, profilePage.countBooksWithImages(5)); // проверяем, что в таблице нет книг
+        step("Авторизация на странице пользователя", () -> {
+            loginPage.loginAs(USER);
+        });
+        step("Добавление 2 книги в коллекцию", () -> {
+            applications.GoToBookStore();
+            api.addBookInCollection(2);
+        });
+        step("Возврат на страницу профиля", () -> {
+            applications.GoToProfilePage();
+            loginPage.loginAs(USER);
+        });
+        step("Проверка, что таблица содержит 2 книги после добавления", () -> {
+            assertEquals(2, profilePage.countBooksWithImages(5));
+        });
+        step("Удаление всех книг из коллекции", () -> {
+            profilePage.deleteAllBooks();
+        });
+        step("Проверка, что таблица содержит 0 книг после удаления", () -> {
+            assertEquals(0, profilePage.countBooksWithImages(5));
+        });
     }
 }

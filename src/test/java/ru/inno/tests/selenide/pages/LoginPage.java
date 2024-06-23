@@ -15,7 +15,7 @@ public class LoginPage {
     private final SelenideElement passwordField = $("#password");
     private final SelenideElement loginButton = $("#login");
 
-    public void openLoginPage() {
+    private static void openLoginPage() {
         open(getUrl() + LOGIN_PATH);
     }
 
@@ -28,12 +28,14 @@ public class LoginPage {
     }
 
     public void loginAs(User user) {
+        openLoginPage();
         setUsernameField(user.getName());
         setPasswordField(user.getPassword());
         clickLoginButton();
     }
 
     public void loginAs(String username, String password) {
+        openLoginPage();
         setUsernameField(username);
         setPasswordField(password);
         clickLoginButton();

@@ -1,15 +1,13 @@
 package ru.inno.tests.selenide.utils;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.WebDriverRunner;
-import org.junit.jupiter.api.AfterEach;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import ru.inno.tests.selenide.models.User;
 
-public class BaseTest {
 
-    private BooksApi booksApi = new BooksApi();
+public class BaseTest {
 
     protected static final User USER = new User(Config.getUsername(), Config.getPassword());
 
@@ -18,17 +16,9 @@ public class BaseTest {
         Configuration.browser = "edge";
         Configuration.browserSize = "1920x1080";
         Configuration.pageLoadStrategy = "eager";
-    }
 
-    @BeforeEach
-    void beforeEach() {
-        booksApi.deleteBooksFromCollection();
-        WebDriverRunner.closeWebDriver();
-    }
-
-    @AfterEach
-    void afterEach() {
-        booksApi.deleteBooksFromCollection();
-
+        SelenideLogger.addListener("allure", new AllureSelenide()
+                .screenshots(true)
+                .savePageSource(true));
     }
 }

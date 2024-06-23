@@ -4,6 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.executeJavaScript;
 
 public class BooStoreApplications {
 
@@ -13,6 +14,8 @@ public class BooStoreApplications {
     private final SelenideElement bookStore = BooStoreApplicationsPanel.$(byText("Book Store"));
     private final SelenideElement profile = BooStoreApplicationsPanel.$(byText("Profile"));
     private final SelenideElement bookStoreAPI = BooStoreApplicationsPanel.$(byText("Book Store API"));
+    private final SelenideElement ban = $("$('#fixedban').remove()");
+    private final SelenideElement footer = $("$('footer').remove()");
 
     public void GoToLoginPage() {
         login.click();
@@ -28,5 +31,10 @@ public class BooStoreApplications {
 
     public void GoToBookStoreAPI() {
         bookStoreAPI.click();
+    }
+
+    public void deleteFooter() {
+        executeJavaScript(String.valueOf(ban));
+        executeJavaScript(String.valueOf(footer));
     }
 }
