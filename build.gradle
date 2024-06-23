@@ -39,7 +39,7 @@ test {
     useJUnitPlatform()
 }
 
-task SelenideTest(type: Test) {
+task DemoqaTest(type: Test) {
     useJUnitPlatform {
         includeTags 'Demoqa'
     }

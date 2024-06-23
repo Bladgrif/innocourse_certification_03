@@ -3,7 +3,6 @@ package ru.inno.tests.selenide.tests;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import ru.inno.tests.selenide.pages.BooStoreApplications;
-import ru.inno.tests.selenide.pages.BooksPage;
 import ru.inno.tests.selenide.pages.LoginPage;
 import ru.inno.tests.selenide.pages.ProfilePage;
 import ru.inno.tests.selenide.utils.BaseTest;
@@ -15,7 +14,6 @@ public class DemoqaTests extends BaseTest {
 
     LoginPage loginPage = new LoginPage();
     ProfilePage profilePage = new ProfilePage();
-    BooksPage booksPage = new BooksPage();
     BooksApi api = new BooksApi();
     BooStoreApplications applications = new BooStoreApplications();
 
